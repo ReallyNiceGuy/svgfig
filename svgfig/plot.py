@@ -29,7 +29,7 @@ class Fig(trans.Delay):
                 del kwds[var]
 
         if len(kwds) > 0:
-            raise TypeError, "Unrecognized keywords " + ", ".join(map(lambda word: "\"%s\"" % word, kwds.keys()))
+            raise TypeError ("Unrecognized keywords " + ", ".join(map(lambda word: "\"%s\"" % word, kwds.keys())))
 
         self.trans = None
 

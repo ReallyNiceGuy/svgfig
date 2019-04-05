@@ -47,7 +47,7 @@ class SVG:
 
         else:
             if len(signature_attrib) > len(signature):
-                raise TypeError, "Tag '%s' expects no more than %d signature attributes (saw %d)" % (tag, len(signature), len(signature_attrib))
+                raise TypeError( "Tag '%s' expects no more than %d signature attributes (saw %d)" % (tag, len(signature), len(signature_attrib)))
 
             for name, value in zip(signature, signature_attrib):
                 self.attrib[name] = value
@@ -65,7 +65,7 @@ class SVG:
         if require is not None:
             for name in require:
                 if name not in self.attrib:
-                    raise TypeError, "Tag '%s' requires a '%s' attribute" % (tag, name)
+                    raise TypeError ("Tag '%s' requires a '%s' attribute" % (tag, name))
 
     ### construct trees inline
     def __call__(self, *children):
@@ -128,7 +128,7 @@ class SVG:
         if signature is not None and name in signature:
             return self.attrib[name]
         else:
-            raise AttributeError, "Tag '%s' has no signature attrib '%s'" % (self.tag, name)
+            raise AttributeError ("Tag '%s' has no signature attrib '%s'" % (self.tag, name))
 
     def __setattr__(self, name, value):
         if self.__dict__["tag"] is None or name == "repr" or name in self.__dict__:
@@ -139,7 +139,7 @@ class SVG:
             if signature is not None and name in signature:
                 self.attrib[name] = value
             else:
-                raise AttributeError, "Tag '%s' has no signature attrib '%s'" % (self.tag, name)
+                raise AttributeError ("Tag '%s' has no signature attrib '%s'" % (self.tag, name))
 
     def __nonzero__(self):
         return True
@@ -160,7 +160,7 @@ class SVG:
         elif isinstance(treeindex, basestring):
             return obj.attrib[treeindex]
         else:
-            raise IndexError, "treeindex must be [#, #, ... #] or [#, #, ... \"str\"]"
+            raise IndexError ("treeindex must be [#, #, ... #] or [#, #, ... \"str\"]")
 
     def __setitem__(self, treeindex, value):
         treeindex, obj = self._treeindex_descend(self, treeindex)
@@ -170,7 +170,7 @@ class SVG:
         elif isinstance(treeindex, basestring):
             obj.attrib[treeindex] = value
         else:
-            raise IndexError, "treeindex must be [#, #, ... #] or [#, #, ... \"str\"]"
+            raise IndexError ("treeindex must be [#, #, ... #] or [#, #, ... \"str\"]")
 
     def __delitem__(self, treeindex):
         treeindex, obj = self._treeindex_descend(self, treeindex)
@@ -180,7 +180,7 @@ class SVG:
         elif isinstance(treeindex, basestring):
             del obj.attrib[treeindex]
         else:
-            raise IndexError, "treeindex must be [#, #, ... #] or [#, #, ... \"str\"]"
+            raise IndexError ("treeindex must be [#, #, ... #] or [#, #, ... \"str\"]")
 
     ################ nested class for walking the tree
     class _SVGDepthIterator:
@@ -254,7 +254,7 @@ class SVG:
         if asstring:
             return "\n".join(output)
         else:
-            print "\n".join(output)
+            print( "\n".join(output))
 
     ### how to present SVG objects on the commandline (used in tree)
     def __repr__(self):
@@ -349,7 +349,7 @@ class SVG:
 
 
     def view(self): # no writing-to-disk needed!
-		self.Viewer.renderSVG(self.xml())
+        self.Viewer.renderSVG(self.xml())
 
     def save(self, fileName, encoding="utf-8", compresslevel=None):
         fileName = defaults._expand_fileName(fileName)
@@ -597,9 +597,9 @@ def svg_to_xml(svg, indent, depth=0):
 
     else:
         if type(svg) == types.InstanceType:
-            raise TypeError, "SVG contains an unrecognized object: instance of class %s" % svg.__class__.__name__
+            raise TypeError ("SVG contains an unrecognized object: instance of class %s" % svg.__class__.__name__)
         else:
-            raise TypeError, "SVG contains an unrecognized object: %s" % type(svg)
+            raise TypeError ("SVG contains an unrecognized object: %s" % type(svg))
 
 # how to convert different attribute types into XML
 def attrib_to_xml(tag, name, value):
@@ -620,7 +620,7 @@ def attrib_to_xml(tag, name, value):
         lastcommand = None
         for datum in value:
             if not isinstance(datum, (list, tuple)):
-                raise TypeError, "Pathdata elements must be lists/tuples"
+                raise TypeError ("Pathdata elements must be lists/tuples")
 
             command = datum[0]
             args = map(numbertostr, datum[1:])
@@ -675,7 +675,7 @@ class Instruction(SVG):
 class Comment(SVG):
     def __init__(self, text):
         if text.find("--") != -1:
-            raise ValueError, "SVG comments must not include '--'"
+            raise ValueError ("SVG comments must not include '--'")
         self.__dict__["tag"] = "comment"
         self.__dict__["attrib"] = {}
         self.__dict__["children"] = []
@@ -698,7 +698,7 @@ class Comment(SVG):
 class CDATA(SVG):
     def __init__(self, text):
         if text.find("]]>") != -1:
-            raise ValueError, "CDATA must not include ']]>'"
+            raise ValueError ("CDATA must not include ']]>'")
         self.__dict__["tag"] = "CDATA"
         self.__dict__["attrib"] = {}
         self.__dict__["children"] = []
@@ -847,7 +847,7 @@ def canonical_transformation(expr):
             return output
 
         else:
-            raise TypeError, "Must be a 2 -> 2 real function or a complex -> complex function"
+            raise TypeError ("Must be a 2 -> 2 real function or a complex -> complex function")
 
     else:
         compiled = compile(expr, expr, "eval")
@@ -869,7 +869,7 @@ def canonical_transformation(expr):
             return output
 
         else:
-            raise TypeError, "Transformation string '%s' must contain real 'x' and 'y' or complex 'z'" % expr
+            raise TypeError ("Transformation string '%s' must contain real 'x' and 'y' or complex 'z'" % expr)
 
 
 def canonical_parametric(expr):
@@ -880,7 +880,7 @@ def canonical_parametric(expr):
             return expr
 
         else:
-            raise TypeError, "Must be a 1 -> 2 real function"
+            raise TypeError ("Must be a 1 -> 2 real function")
 
     else:
         compiled = compile(expr, expr, "eval")
@@ -905,7 +905,7 @@ def canonical_parametric(expr):
             return output
 
         else:
-            raise TypeError, "Parametric string '%s' must contain real 't', 'x', or 'z'" % expr
+            raise TypeError ("Parametric string '%s' must contain real 't', 'x', or 'z'" % expr)
 
 cannonical_transformation = canonical_transformation  # XXX DEPRECATED (wrong spelling), will be removed later
 cannonical_parametric = canonical_parametric  # XXX DEPRECATED (wrong spelling), will be removed later
@@ -921,7 +921,7 @@ def _code_constructor(code_args, python_version, svgfig_version):
 
 def _code_serializer(code):
     if code.co_freevars or code.co_cellvars:
-        raise ValueError, "Sorry, can't pickle code that depends on local variables %s %s" % (str(code.co_freevars), str(code.co_cellvars))
+        raise ValueError ("Sorry, can't pickle code that depends on local variables %s %s" % (str(code.co_freevars), str(code.co_cellvars)))
     return _code_constructor, ((code.co_argcount, code.co_nlocals, code.co_stacksize,
                                 code.co_flags, code.co_code, code.co_consts, code.co_names,
                                 code.co_varnames, code.co_filename, code.co_name,
