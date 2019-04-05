@@ -2,9 +2,10 @@
 
 from distutils.core import setup, Extension
 from distutils.command.build_ext import build_ext
-import os
+import os,sys
+sys.path.append("svgfig")
 
-import svgfig.defaults
+import defaults
 
 extension_features = {
   "_curve": None
@@ -17,23 +18,23 @@ class my_build_ext(build_ext):
         except:
             for ext, feat in extension_features.items():
                 if ext in extension.name and feat is None:
-                    raise Exception, "Failed to compile %s" % ext
+                    raise Exception ("Failed to compile %s" % ext)
 
-            print "************************************************************************************************"
-            print ""
-            print "Note: couldn't compile \"%s\", so you will be unable to use this feature:" % extension.name
-            print ""
+            print ("************************************************************************************************")
+            print ("")
+            print ("Note: couldn't compile \"%s\", so you will be unable to use this feature:" % extension.name)
+            print ("")
             for ext, feat in extension_features.items():
                 if ext in extension.name:
-                    print feat
+                    print (feat)
                     break
-            print ""
-            print "************************************************************************************************"
+            print ("")
+            print ("************************************************************************************************")
 
 curve_extension = Extension(os.path.join("svgfig", "_curve"), [os.path.join("svgfig", "_curve.c")], {})
 
 setup(name="SVGFig",
-      version=svgfig.defaults.version,
+      version=defaults.version,
       description="SVGFig: Quantitative drawing in Python and SVG",
       author="Jim Pivarski",
       author_email="jpivarski@gmail.com",

@@ -1,9 +1,5 @@
 #include <Python.h>
 
-#ifndef PyMODINIT_FUNC
-#define PyMODINIT_FUNC void
-#endif
-
 struct sample {
   double t, x, y;
   int discontinuity;
@@ -359,6 +355,36 @@ static PyMethodDef _curve_methods[] = {
   {NULL}
 };
 
-PyMODINIT_FUNC init_curve() {
-  Py_InitModule3("_curve", _curve_methods, "");
+#if PY_MAJOR_VERSION >= 3
+
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "myextension",
+        NULL,
+        -1, 
+        _curve_methods,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+};
+
+#define INITERROR return NULL
+
+PyMODINIT_FUNC PyInit_curve(void)
+#else
+#define INITERROR return
+
+void init_curve(void)
+#endif
+{
+#if PY_MAJOR_VERSION >= 3
+  PyObject *module = PyModule_Create(&moduledef);
+#else
+  PyObject *module = Py_InitModule3("_curve", _curve_methods, "");
+#endif
+  if (module == NULL) INITERROR;
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
 }

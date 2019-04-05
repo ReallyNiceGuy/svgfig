@@ -9,7 +9,7 @@ def poly(*data, **kwds):
         loop = kwds["loop"]
         del kwds["loop"]
     if len(kwds) > 0:
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
     if len(data) <= 1:
         data = data[0]
@@ -25,7 +25,7 @@ def poly(*data, **kwds):
             output.append(("Z",))
         return output
     except (TypeError, ValueError):
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
 def bezier(*data, **kwds):
     errstring = "Arguments are: bezier((x,y,c1x,c1y,c2x,c2y), ..., loop=False)"
@@ -34,7 +34,7 @@ def bezier(*data, **kwds):
         loop = kwds["loop"]
         del kwds["loop"]
     if len(kwds) > 0:
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
     try:
         output = []
@@ -47,7 +47,7 @@ def bezier(*data, **kwds):
             output.append(("Z",))
         return output
     except (TypeError, ValueError):
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
 def velocity(*data, **kwds):
     errstring = "Arguments are: velocity((x,y,vx,vy), ..., loop=False)"
@@ -56,7 +56,7 @@ def velocity(*data, **kwds):
         loop = kwds["loop"]
         del kwds["loop"]
     if len(kwds) > 0:
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
     try:
         output = []
@@ -81,7 +81,7 @@ def velocity(*data, **kwds):
             output.append(("Z",))
         return output
     except (TypeError, ValueError):
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
 def foreback(*data, **kwds):
     errstring = "Arguments are: foreback((x,y,vfx,vfy,vbx,vby), ..., loop=False)"
@@ -90,7 +90,7 @@ def foreback(*data, **kwds):
         loop = kwds["loop"]
         del kwds["loop"]
     if len(kwds) > 0:
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
     try:
         output = []
@@ -115,7 +115,7 @@ def foreback(*data, **kwds):
             output.append(("Z",))
         return output
     except (TypeError, ValueError):
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
 def smooth(*data, **kwds):
     errstring = "Arguments are: smooth((x1,y1), (x2,y2), ..., loop=False)"
@@ -125,7 +125,7 @@ def smooth(*data, **kwds):
         loop = kwds["loop"]
         del kwds["loop"]
     if len(kwds) > 0:
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
     try:
         x, y = zip(*data)
@@ -141,7 +141,7 @@ def smooth(*data, **kwds):
 
         return velocity(zip(x, y, vx, vy), loop)
     except (TypeError, ValueError):
-        raise TypeError, errstring
+        raise TypeError (errstring)
 
 ############################### pathdata parsers
 
@@ -215,7 +215,7 @@ def parse(pathdata):
             errstring = "Pathdata command \"%s\" requires a number at index %d" % (command, index)
             num1, index, pathdata = parse_number(index, pathdata)
             if num1 is None:
-                raise ValueError, errstring
+                raise ValueError (errstring)
 
             while num1 is not None:
                 output.append((command, num1))
@@ -228,11 +228,11 @@ def parse(pathdata):
             num2, index, pathdata = parse_number(index, pathdata)
 
             if num1 is None:
-                raise ValueError, errstring
+                raise ValueError (errstring)
 
             while num1 is not None:
                 if num2 is None:
-                    raise ValueError, errstring
+                    raise ValueError (errstring)
                 output.append((command, num1, num2))
 
                 num1, index, pathdata = parse_number(index, pathdata)
@@ -247,11 +247,11 @@ def parse(pathdata):
             num4, index, pathdata = parse_number(index, pathdata)
 
             if num1 is None:
-                raise ValueError, errstring
+                raise ValueError (errstring)
 
             while num1 is not None:
                 if num2 is None or num3 is None or num4 is None:
-                    raise ValueError, errstring
+                    raise ValueError (errstring)
                 output.append((command, num1, num2, num3, num4))
 
                 num1, index, pathdata = parse_number(index, pathdata)
@@ -270,11 +270,11 @@ def parse(pathdata):
             num6, index, pathdata = parse_number(index, pathdata)
 
             if num1 is None:
-                raise ValueError, errstring
+                raise ValueError (errstring)
 
             while num1 is not None:
                 if num2 is None or num3 is None or num4 is None or num5 is None or num6 is None:
-                    raise ValueError, errstring
+                    raise ValueError (errstring)
 
                 output.append((command, num1, num2, num3, num4, num5, num6))
 
@@ -297,11 +297,11 @@ def parse(pathdata):
             num7, index, pathdata = parse_number(index, pathdata)
 
             if num1 is None:
-                raise ValueError, errstring
+                raise ValueError (errstring)
 
             while num1 is not None:
                 if num2 is None or num3 is None or num4 is None or num5 is None or num6 is None or num7 is None:
-                    raise ValueError, errstring
+                    raise ValueError (errstring)
 
                 output.append((command, num1, num2, num3, num4, num5, num6, num7))
 
@@ -322,7 +322,7 @@ def transform(func, pathdata):
     output = []
     for datum in pathdata:
         if not isinstance(datum, (tuple, list)):
-            raise TypeError, "Pathdata elements must be lists/tuples"
+            raise TypeError ("Pathdata elements must be lists/tuples")
 
         command = datum[0]
         args = datum[1:]
@@ -442,7 +442,7 @@ def bbox(pathdata):
 
     for datum in pathdata:
         if not isinstance(datum, (tuple, list)):
-            raise TypeError, "Pathdata elements must be lists/tuples"
+            raise TypeError ("Pathdata elements must be lists/tuples")
 
         command = datum[0]
         args = datum[1:]

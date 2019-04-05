@@ -222,10 +222,10 @@ def window(xmin, xmax, ymin, ymax, x=0, y=0, width=100, height=100, xlogbase=Non
     iy2 = ymax
 
     if xlogbase is not None and (ix1 <= 0. or ix2 <= 0.):
-        raise ValueError, "x range incompatible with log scaling: (%g, %g)" % (ix1, ix2)
+        raise ValueError ("x range incompatible with log scaling: (%g, %g)" % (ix1, ix2))
 
     if ylogbase is not None and (iy1 <= 0. or iy2 <= 0.):
-        raise ValueError, "y range incompatible with log scaling: (%g, %g)" % (iy1, iy2)
+        raise ValueError ("y range incompatible with log scaling: (%g, %g)" % (iy1, iy2))
 
     xlogstr, ylogstr = "", ""
 
