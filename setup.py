@@ -1,54 +1,63 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from distutils.core import setup, Extension
-from distutils.command.build_ext import build_ext
-import os,sys
+from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
+import os
+import sys
+
 sys.path.append("svgfig")
-
 import defaults
 
+# Optional extensions that can be skipped if they fail
 extension_features = {
-  "_curve": None
-  }
+    "_curve": None
+}
+
 
 class my_build_ext(build_ext):
     def build_extension(self, extension):
         try:
-            build_ext.build_extension(self, extension)
-        except:
+            super().build_extension(extension)
+        except Exception as e:
             for ext, feat in extension_features.items():
                 if ext in extension.name and feat is None:
-                    raise Exception ("Failed to compile %s" % ext)
+                    raise RuntimeError(f"Failed to compile {ext}") from e
 
-            print ("************************************************************************************************")
-            print ("")
-            print ("Note: couldn't compile \"%s\", so you will be unable to use this feature:" % extension.name)
-            print ("")
+            print("*" * 94)
+            print(f"\nNote: couldn't compile \"{extension.name}\", so you will be unable to use this feature:")
             for ext, feat in extension_features.items():
                 if ext in extension.name:
-                    print (feat)
+                    print(feat)
                     break
-            print ("")
-            print ("************************************************************************************************")
+            print("\n" + "*" * 94)
 
-curve_extension = Extension(os.path.join("svgfig", "_curve"), [os.path.join("svgfig", "_curve.c")], {})
 
-setup(name="SVGFig",
-      version=defaults.version,
-      description="SVGFig: Quantitative drawing in Python and SVG",
-      author="Jim Pivarski",
-      author_email="jpivarski@gmail.com",
-      url="http://code.google.com/p/svgfig/",
-      py_modules=[os.path.join("svgfig", "__init__"),
-                  os.path.join("svgfig", "curve"),
-                  os.path.join("svgfig", "defaults"),
-                  os.path.join("svgfig", "glyphs"),
-                  os.path.join("svgfig", "interactive"),
-                  os.path.join("svgfig", "pathdata"),
-                  os.path.join("svgfig", "plot"),
-                  os.path.join("svgfig", "svg"),
-                  os.path.join("svgfig", "trans"),
-                  ],
-      cmdclass={"build_ext": my_build_ext},
-      ext_modules=[curve_extension],
-     )
+#  Define the extension
+curve_extension = Extension(
+    "svgfig._curve",
+    sources=[os.path.join("svgfig", "_curve.c")]
+)
+
+# Setup configuration
+setup(
+    name="SVGFig",
+    version=defaults.version,
+    description="SVGFig: Quantitative drawing in Python and SVG",
+    author="Jim Pivarski",
+    author_email="jpivarski@gmail.com",
+    url="http://code.google.com/p/svgfig/",
+    packages=["svgfig"],
+    py_modules=[
+        "svgfig.__init__",
+        "svgfig.curve",
+        "svgfig.defaults",
+        "svgfig.glyphs",
+        "svgfig.interactive",
+        "svgfig.pathdata",
+        "svgfig.plot",
+        "svgfig.svg",
+        "svgfig.trans"
+    ],
+    cmdclass={"build_ext": my_build_ext},
+    ext_modules=[curve_extension],
+)
